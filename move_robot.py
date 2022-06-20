@@ -86,9 +86,6 @@ def grab_cup(cX, cY, angle):
     center_J = rtde_r.getActualQ()
     # Get desired angle
     rot = geometry.get_angle((pX, pY), (cX, cY))
-    print(rot)
-
-    print(center_J[5])
 
     center_J[5] -= rot
     rtde_c.moveJ(center_J)
@@ -269,11 +266,7 @@ def grab_cup_orientation(cX, cY, orientation):
     pX = copy.copy(cX)
     pY = copy.copy(cY) - grip_dy
 
-    print("test1", pX, pY, orientation)
-
     pX, pY = geometry.rotate(cX, cY, pX, pY, orientation)
-
-    print("test2", pX, pY)
 
     temp_L[0] = pX
     temp_L[1] = pY

@@ -33,6 +33,7 @@ move_robot.initialize_robot()
 try:
     print("starting loop")
 
+    #Grabs the current camera frame and detect ArUco markers
     while True:
 
         frame = vs.read()
@@ -53,14 +54,15 @@ try:
 
     # Get Cup Coordinates in robot base reference frame
     listCups_data = marker_cup_detection.getCupCoordinates(detected_markers)
-    #Plot the results
-    marker_cup_detection.cup_layout(listCups_data)
+
+    marker_cup_detection.cup_layout(listCups_data)  # Plot the results
+    """
     #Print the results
     for i, obj in enumerate(listCups_data, 0):
         print(obj.ID, obj.center, obj.orientation, sep=' ')
-    #Apply pouring algorithm
-    move_robot.grab_cup_orientation(listCups_data[0].center[0],listCups_data[0].center[1], math.pi/2) # grabs cup with desired angle
-    #sp.simple_pouring(listCups_data)
+    """
+
+    sp.simple_pouring(listCups_data)  # Apply pouring algorithm
 
     print("exiting loop")
     time.sleep(10)

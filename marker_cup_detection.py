@@ -19,13 +19,14 @@ calibrationMatrix = np.load('Cam_Calibration/calibration_matrix.npy')
 distortionCoefficient = np.load('Cam_Calibration/distortion_coefficients.npy')
 
 # ArUco marker ref origin in the coordinates of the UR5 base ref frame
-origin_L = [0.355, 0.396, 0.31504431455331383, -3.13713023885791, 0.08284771453405795,
+origin_L = [0.36, 0.4, 0.31504431455331383, -3.13713023885791, 0.08284771453405795,
             -0.009878696005977336]
 
 # misc. hyperparameters
-rCups = 0.055  # Cup radius in cm
+rCups = 0.055  # Cup radius in m
 rMax = 0.12
-dMtCe = 0.025  # distance from marker center to cup edge in cm
+dist1 = 0.02
+dist2 = dist1 + rCups
 
 # misc. Terrain Field to be defined at the beginning
 xMax = 0.5
@@ -171,14 +172,10 @@ def getCupCoordinates(detected_markers):
             tX = origin_L[0] + obj.edge[0] / 1000
             tY = origin_L[1] + obj.edge[1] / 1000
 
-            dist1 = rCups + dMtCe
-            dist2 = 2 * rCups + dMtCe
-
             (cX, cY) = geometry.segmentExtension((mX, mY), (tX, tY), dist1)
             (eX, eY) = geometry.segmentExtension((mX, mY), (tX, tY), dist2)
 
             angle = geometry.get_angle((cX, cY), (eX, eY)) #angles range from [-PI,PI] counter-clockwise
-            print(angle)
             listCups_data.append(Cup('Pouring', obj.ID, (cX, cY), (eX, eY), angle))
 
     return listCups_data

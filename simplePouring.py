@@ -38,48 +38,66 @@ def simple_pouring(listCups):
 def position_cups(listCups_moved, listCups, listCups_endlocations):
     # cycle through all cups and check if they can and should be moved
     while not (check(listCups_moved)):
+        cycle = copy.copy(listCups_moved)
         for i in range(len(listCups)):
-            # check if there is any obstruction
-            nb_obst, id_obst = check_obstruction(i, listCups)
-            print("Number of Obstructions",listCups[i].ID, nb_obst)
+            if not listCups_moved[i]:
+                # check if there is any obstruction
+                print("Debug 1")
+                nb_obst, id_obst = check_obstruction(i, listCups)
+                print("Number of Obstructions for Cup",listCups[i].ID,"is",nb_obst)
 
-            # Case 1: No Obstruction
-            if nb_obst == 0:
-                print("No Detected Obstruction")
-                # Grab cup with fixed robot wrist angle
-                angle = math.pi
-                move_robot.grab_cup(listCups[i].center[0], listCups[i].center[1], angle)
-                move_robot.place_cup(listCups_endlocations[i][0], listCups_endlocations[i][1])
+                # Case 1: No Obstruction
+                if nb_obst == 0:
+                    print("Cup", listCups[i].ID, "can be grabbed")
+                    # Grab cup with fixed robot wrist orientation
+                    angle = 0
+                    move_robot.grab_cup(listCups[i].center[0], listCups[i].center[1], angle)
+                    move_robot.place_cup(listCups_endlocations[i][0], listCups_endlocations[i][1])
 
-                # change the center position in the list & update alpha
-                listCups[i].center = listCups_endlocations[i]
-                listCups_moved[i] = True
-                listCups[i].orientation -= math.pi/2
-                print("alpha")
-                print(listCups[i].orientation)
+                    # change the center position in the list & update alpha
+                    listCups[i].center = listCups_endlocations[i]
+                    listCups_moved[i] = True
+                    listCups[i].orientation -= math.pi/2
+                    print("alpha")
+                    print(listCups[i].orientation)
 
+                # Case 2: 1 Obstruction
+                if nb_obst == 1:
 
+                    print("Cup", listCups[i].ID, "can be grabbed")
+                    # calculate the angle for which the gripper needs to grab the cup properly
+                    # Here we just make it grab at the opposite of the other cup
+                    for obj in listCups:
+                        for ID in id_obst:
+                            if obj.ID == ID:
+                                angle = geometry.get_angle(listCups[i].center, obj.center)
 
-            # Case 2: 1 Obstruction
-            if nb_obst == 1:
-                print("1 Detected Obstruction")
-                # calculate the angle for which the gripper needs to grab the cup properly
-                # Here we just make it grab at the opposite of the other cup
-                angle = geometry.get_angle(listCups[i].center, listCups[id_obst[0]].center)
-                move_robot.grab_cup(listCups[i].center[0], listCups[i].center[1], angle)
-                move_robot.place_cup(listCups_endlocations[i][0], listCups_endlocations[i][1])
+                    move_robot.grab_cup(listCups[i].center[0], listCups[i].center[1], angle)
+                    move_robot.place_cup(listCups_endlocations[i][0], listCups_endlocations[i][1])
 
-                listCups[i].center = listCups_endlocations[i]
-                listCups_moved[i] = True
-                listCups[i].orientation -= math.pi / 2 + angle
+                    listCups[i].center = listCups_endlocations[i]
+                    listCups_moved[i] = True
+                    listCups[i].orientation -= math.pi / 2 + angle
 
-            # Case 3: 2 or more Obstructions
-            if nb_obst > 1:
-                print("2 Detected Obstruction")
-               # Case3.case3_algorithm(listCups)
+                # Case 2: Obstructions
+                if nb_obst > 1:
+                    # calculate the angle for which the gripper needs to grab the cup properly
+                    angle = Case3.algorithm(listCups, listCups[i].ID, id_obst)
 
+                    if angle is not None:
+                        print("Cup",listCups[i].ID,"can be grabbed")
+                        move_robot.grab_cup(listCups[i].center[0], listCups[i].center[1], angle)
+                        move_robot.place_cup(listCups_endlocations[i][0], listCups_endlocations[i][1])
 
-        print(listCups_moved)
+                        listCups[i].center = listCups_endlocations[i]
+                        listCups_moved[i] = True
+                        listCups[i].orientation -= math.pi / 2 + angle
+                    else:
+                        print("Cup", listCups[i].ID, "cannot be grabbed at this loop")
+
+        if cycle == listCups_moved:
+            print("Cups are too close together, cannot perform grasping motion")
+            return
     return
 
 def pouring_cups(listCups_moved, listCups_center,listCups_alpha, listCups_endlocations):
@@ -101,28 +119,14 @@ def pouring_cups(listCups_moved, listCups_center,listCups_alpha, listCups_endloc
 def check_obstruction(i, listCups):
     obstruction = 0
     obstruction_id = []
-    obstruction_dist = []
     for j in range(len(listCups)):
         if i != j:
             dist = geometry.calculate_distance(listCups[i].center, listCups[j].center)
             if dist < rMax:
                 obstruction += 1
-                obstruction_id.append(j)
-                obstruction_dist.append(dist)
+                obstruction_id.append(listCups[j].ID)
         else:
             continue
-
-    print()
-
-    #Make obstruction_id list in descending order based on the distance
-    obstruction_order = copy.copy(obstruction_dist)
-    obstruction_order.sort(reverse=True)
-    for j in range(len(obstruction_order)):
-        for k in range(len(obstruction_order)):
-            if obstruction_dist[j] == obstruction_order[k]:
-                obstruction_dist[j] = k
-
-    obstruction_id = [obstruction_id[j] for j in obstruction_dist]
 
     return obstruction, obstruction_id
 
