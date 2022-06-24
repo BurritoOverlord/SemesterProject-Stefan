@@ -11,6 +11,8 @@ dCups = 0.19 # distance between each cup in the end position
 xLoc = -0.11
 yLoc = 0.235
 rCups = 0.055 * 1.5
+xUnstructured = 0.2  # center of unstructured area
+yUnstructured = 0.5  # center of unstructured area
 
 
 def simple_pouring(listCups):
@@ -31,7 +33,7 @@ def simple_pouring(listCups):
     """
     position_cups(listCups_moved, listCups, listCups_endlocations)
 
-    #pouring_cups(listCups_moved, listCups_center, listCups_alpha, listCups_endlocations)
+    #pouring_cups(listCups)
     return
 
 
@@ -100,20 +102,32 @@ def position_cups(listCups_moved, listCups, listCups_endlocations):
             return
     return
 
-def pouring_cups(listCups_moved, listCups_center,listCups_alpha, listCups_endlocations):
+def pouring_cups(listCups):
 
-    #Pour cup 1 into cup 2
-    print("Pouring cups")
-    x = 0
-    angle = math.pi/2
-    move_robot.grab_cup(listCups_center[x][0], listCups_center[x][1], angle)
-    move_robot.place_cupP(0.2, 0.5)
-    listCups_alpha[x] += angle
-    #angle that wrist is supposed to take
-    print(listCups_alpha[x])
+    #Pour Cup_ID_5 into Cup_ID_6
+    print("Pouring Cup_ID_5 into Cup_ID_6")
+    pouring = [False, False]
+    xTMP = 0
+    yTMP = 0
+    for obj in listCups:
+        if obj.ID == 5:
+            angle = math.pi / 2
+            move_robot.grab_cup(obj.center[0], obj.center[1], angle)
+            move_robot.place_cupP(xUnstructured, yUnstructured)  # Place Cup in center of Unstructured area
+            obj.orientation += angle
+            print("Cup_ID_5 Orientation:", obj.orientation)
+            move_robot.grab_cupP(xUnstructured, yUnstructured, obj.orientation)
+            pouring[0] = True
 
-    move_robot.grab_cupP(0.2, 0.5, listCups_alpha[x])
-    move_robot.pouring(listCups_endlocations[1][0],listCups_endlocations[1][1])
+        if obj.ID == 6:
+            xTMP = obj.center[0]
+            yTMP = obj.center[1]
+            pouring[1] = True
+
+    if check(pouring):
+        move_robot.pouring(xTMP,yTMP)
+    else:
+        print("Cannot Perform Specific Process as CUP_ID_5 or 6 is not present in SET-UP")
     return
 
 def check_obstruction(i, listCups):

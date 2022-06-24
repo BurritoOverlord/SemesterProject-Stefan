@@ -117,14 +117,13 @@ def getRealCoordinates(frame, field_corners, detected_markers, p_width=video_res
                        p_height=video_resolution[1]):
 
     # resize frame into the "playing field" coordinate space
-    # width, height = (500, 500)  # Image size after transformation in pixels
     field_corners_vect = np.float32([field_corners[0], field_corners[1], field_corners[2], field_corners[3]])
     true_coordinates = np.float32([[0, 0], [p_width, 0], [p_width, p_height], [0, p_height]])
     trans_mat = cv2.getPerspectiveTransform(field_corners_vect, true_coordinates)
 
     # show playing field
-    img_trans = cv2.warpPerspective(frame, trans_mat, (p_width, p_height))
-    cv2.imshow("new frame", img_trans)
+    #img_trans = cv2.warpPerspective(frame, trans_mat, (p_width, p_height))
+    #cv2.imshow("new frame", img_trans)
 
     # print(detected_markers)
     ##########################################################################q##################
