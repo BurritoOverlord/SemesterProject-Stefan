@@ -16,7 +16,7 @@ rtde_c = rtde_control.RTDEControlInterface("192.168.1.20")
 rtde_r = rtde_receive.RTDEReceiveInterface("192.168.1.20")
 
 # Setup Gripper
-arduino = Arduino(descriptiveDeviceName="ARD", portName="COM5", baudrate=115200)
+arduino = Arduino(descriptiveDeviceName="ARD", portName="COM3", baudrate=115200)
 # Connects with the Arduino Nano and does the handshake to start void loop()
 arduino.connect_and_handshake()
 

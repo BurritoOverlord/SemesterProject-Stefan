@@ -197,7 +197,7 @@ def cup_layout(listCups):
         circle = plt.Circle(obj.edge, rCups / 5, color='blue', ec='black')
         plt.gcf().gca().add_patch(circle)
 
-    plt.title('Cup Layout 2')
+    plt.title('Cup Layout')
     ax.set_aspect(1)
     plt.show()
 
