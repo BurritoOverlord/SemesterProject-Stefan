@@ -2,13 +2,8 @@ import time
 import copy
 import math
 
-import sim
-from Simulation import Simulation_globalvariables as g
-from Simulation import Simulation_gripper as grip
-from Simulation import Simulation_moveL as mL
 from Simulation import Simulation_move_robot as move_robot
 
-import move_robot
 import geometry
 import Case3
 ###################################
@@ -57,7 +52,6 @@ def position_cups(listCups_moved, listCups, listCups_endlocations):
         for i in range(len(listCups)):
             if not listCups_moved[i]:
                 # check if there is any obstruction
-                print("Debug 1")
                 nb_obst, id_obst = check_obstruction(i, listCups)
                 print("Number of Obstructions for Cup", listCups[i].ID, "is", nb_obst)
 

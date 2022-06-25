@@ -5,15 +5,13 @@ Launch this script to test simulation - Initialises with respect to actual cup p
 import cv2
 import imutils
 from imutils.video import VideoStream
-import math
 import time
 
 import sim
 from Simulation import Simulation_globalvariables as g
 from Simulation import Simulation_gripper as grip
 from Simulation import Simulation_simplePouring as sp
-
-import marker_cup_detection
+from Simulation import Simulation_marker_cup_detection as marker_cup_detection
 
 "SETTINGS AND VARIABLES ________________________________________________________________"
 

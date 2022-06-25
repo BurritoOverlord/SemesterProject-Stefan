@@ -8,7 +8,8 @@ from Simulation import Simulation_moveL as mL
 
 # NOTE: CAN ONLY ROTATE GRIPPER IF THERE IS ALSO A TRANSLATION (X,Y,Z) - Need To Fix moveL function
 
-def grab_cup(cX, cY, angle, cupID):
+def grab_cup(cX, cY, angle, ID):
+    cupID = str(ID)
     errorCode, cupH = sim.simxGetObjectHandle(g.clientID, 'Cup' + cupID, sim.simx_opmode_blocking)
 
     target_pos = [cX, cY, g.z_pCup, 0, 0, angle]
@@ -31,7 +32,8 @@ def grab_cup(cX, cY, angle, cupID):
     mL.move_L(g.clientID, g.target, target_pos, g.kFinal)
     time.sleep(2)
 
-def place_cup(cX, cY, angle, cupID):
+def place_cup(cX, cY, angle, ID):
+    cupID = str(ID)
     errorCode, cupH = sim.simxGetObjectHandle(g.clientID, 'Cup' + cupID, sim.simx_opmode_blocking)
 
     target_pos = [cX, cY, g.z_pCup, 0, 0, angle]
