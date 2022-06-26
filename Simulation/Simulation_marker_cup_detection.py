@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 # my modules
 import geometry
+import move_robot as mr
 
 "SETTINGS AND VARIABLES ________________________________________________________________"
 
@@ -17,10 +18,6 @@ r_height = 197
 # Calibration Parameters
 calibrationMatrix = np.load('calibration_matrix.npy')
 distortionCoefficient = np.load('distortion_coefficients.npy')
-
-# ArUco marker ref origin in the coordinates of the UR5 base ref frame
-origin_L = [0.36, 0.4, 0.31504431455331383, -3.13713023885791, 0.08284771453405795,
-            -0.009878696005977336]
 
 # misc. hyperparameters
 rCups = 0.055  # Cup radius in m
@@ -165,11 +162,11 @@ def getCupCoordinates(detected_markers):
 
         if obj.type == 'Cup':
             # Get cup edge en center from ArUco markers - in Meters!
-            mX = origin_L[0] + obj.center[0] / 1000
-            mY = origin_L[1] + obj.center[1] / 1000
+            mX = mr.origin_L[0] + obj.center[0] / 1000
+            mY = mr.origin_L[1] + obj.center[1] / 1000
 
-            tX = origin_L[0] + obj.edge[0] / 1000
-            tY = origin_L[1] + obj.edge[1] / 1000
+            tX = mr.origin_L[0] + obj.edge[0] / 1000
+            tY = mr.origin_L[1] + obj.edge[1] / 1000
 
             (cX, cY) = geometry.segmentExtension((mX, mY), (tX, tY), dist1)
             (eX, eY) = geometry.segmentExtension((mX, mY), (tX, tY), dist2)

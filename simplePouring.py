@@ -12,7 +12,7 @@ xLoc = -0.11
 yLoc = 0.235
 rCups = 0.055 * 1.5
 xUnstructured = 0.2  # center of unstructured area
-yUnstructured = 0.5  # center of unstructured area
+yUnstructured = 0.3  # center of unstructured area
 
 
 def simple_pouring(listCups):
@@ -33,7 +33,7 @@ def simple_pouring(listCups):
     """
     position_cups(listCups_moved, listCups, listCups_endlocations)
 
-    #pouring_cups(listCups)
+    pouring_cups(listCups)
     return
 
 
@@ -109,8 +109,10 @@ def pouring_cups(listCups):
     pouring = [False, False]
     xTMP = 0
     yTMP = 0
+    xReturn = 0
+    yReturn = 0
     for obj in listCups:
-        if obj.ID == 5:
+        if obj.ID == 4:
             angle = math.pi / 2
             move_robot.grab_cup(obj.center[0], obj.center[1], angle)
             move_robot.place_cupP(xUnstructured, yUnstructured)  # Place Cup in center of Unstructured area
@@ -118,14 +120,17 @@ def pouring_cups(listCups):
             print("Cup_ID_5 Orientation:", obj.orientation)
             move_robot.grab_cupP(xUnstructured, yUnstructured, obj.orientation)
             pouring[0] = True
+            xReturn = obj.center[0]
+            yReturn = obj.center[1]
 
-        if obj.ID == 6:
+        if obj.ID == 5:
             xTMP = obj.center[0]
             yTMP = obj.center[1]
             pouring[1] = True
 
     if check(pouring):
         move_robot.pouring(xTMP,yTMP)
+        move_robot.place_cup(xReturn, yReturn)
     else:
         print("Cannot Perform Specific Process as CUP_ID_5 or 6 is not present in SET-UP")
     return

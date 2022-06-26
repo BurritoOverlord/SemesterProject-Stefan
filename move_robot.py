@@ -32,7 +32,7 @@ pouring_dx = 0.08
 grab_height_offset = 0.075  # grab height offset to cup from origin_L
 
 # best if I get it from Joint Position
-origin_L = [0.305, 0.506, 0.31504431455331383 + 2 * grab_height_offset, -3.13713023885791, 0.08284771453405795,
+origin_L = [0.305465140017902, 0.6464778612275694, 0.31504431455331383 + 2 * grab_height_offset, -3.13713023885791, 0.08284771453405795,
             -0.009878696005977336]
 
 pouring_1_L = [0.1329460444039362, 0.001992027271668584, 0.028232181258689593, 0.4172834491949249, 0.5468231534718957,
@@ -231,26 +231,23 @@ def pouring(cX, cY):
     # Move to Pouring Position 1
     for i in range(len(temp_L)):
         temp_L[i] -= pouring_1_L[i]
-    print(temp_L)
     rtde_c.moveL(temp_L)
 
     # Move to Pouring Position 2
     for i in range(len(temp_L)):
         temp_L[i] += pouring_2_L[i]
-    print(temp_L)
     rtde_c.moveL(temp_L)
 
     # Move to Pouring Position 3
     for i in range(len(temp_L)):
         temp_L[i] += pouring_3_L[i]
-    print(temp_L)
     rtde_c.moveL(temp_L)
 
     # Move to Pouring Position 4
     for i in range(len(temp_L)):
         temp_L[i] += pouring_4_L[i]
-    print(temp_L)
     rtde_c.moveL(temp_L)
+
     return
 
 
