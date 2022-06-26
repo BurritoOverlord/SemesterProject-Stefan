@@ -37,6 +37,9 @@ g.connectionMessage(g.clientID)  # Printing out a successful/unsuccessful remote
 # Functions
 
 def initCups(listCups):
+
+    #Initialize robot and cup starting position
+
     for obj in listCups:
         cupID = str(obj.ID)
         cup_spawn = [obj.center[0], obj.center[1], g.z_spawn]

@@ -7,8 +7,6 @@ import sim
 
 kFinal = 0
 
-
-
 ## Initialization ##
 
 clientID = sim.simxStart('127.0.0.1', 19990, True, True, 5000, 5)  #Server IP, Port num, boolean wait-until-connected
@@ -42,27 +40,10 @@ returnCode, pos = sim.simxGetObjectPosition(clientID, target, -1, sim.simx_opmod
 returnCode, orient = sim.simxGetObjectOrientation(clientID, target, -1, sim.simx_opmode_streaming)
 
                 ## Coordinates ##
-"""
-Coordinates to test try simulation
-"""
 #Initial + spawn point coordinates
-initial_pos = [0.275, 0.505, 0.87, 0, 0, 0] #[x, y, z, alpha, beta, gamma]
+initial_pos = [0.275, 0.646, 0.87, 0, 0, 0] #[x, y, z, alpha, beta, gamma]
 z_spawn = 0.765  # [x, y, z]
-z_pCup = 0.965  # height for with the end effector is before grasping
+z_pCup = 1.050  # height for with the end effector is before grasping 1.050
 z_gCup = 0.89  # height for with the end effector is for grasping motion
 
-#Basket-returning coordinates IN REAL WORLD COORDINATES - Remember to add wait call after each moveL
-b1_return_pos = [0.25, 0.775, 0.965, 0, 0, 0]
-b2_return_pos = [0.25, 0.775, 0.89, 0, 0, 0]
-b3_return_pos = [0.25, 0.675, 0.965, 0, 0, 0]
-b4_return_pos = [0.25, 0.675, 0.89, 0, 0, 0]
-b5_return_pos = [0.25, 0.675, 0.965, 0, 0, PI/2]
-b6_return_pos = [0.25, 0.675, 1, 0, 0, PI]# in radians
 
-
-#Basket-moving coordinates for basket 1
-b1_int_pos = [0.15, 0.775, 0.765, 0, 0, 0]
-b1_int_pos_2 = [0.275, 0.505, 0.87, 0, 0, 0]
-b1_int_pos_3 = [0.15, 0.775, 0.765, 0, 0, 0]
-b1_int_pos_4 = [0.275, 0.505, 0.87, 0, 0, 0]
-b1_final_pos = [0.15, 0.775, 0.765, 0, 0, 0]
